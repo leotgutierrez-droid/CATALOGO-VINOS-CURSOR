@@ -1026,8 +1026,33 @@
                 }
             };
 
+            // Reduce espacio entre precio unitario, precio por caja y precio mínimo sugerido
+            const normalize = (text) => (text || '')
+                .toString()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toUpperCase();
+
+            const marginClasses = ['mt-0','mt-1','mt-2','mt-3','mt-4','mt-5','mt-6','mt-7','mt-8','mb-0','mb-1','mb-2','mb-3','mb-4','mb-5','mb-6','mb-7','mb-8'];
+
+            const adjustPriceSpacing = (card) => {
+                const paragraphs = Array.from(card.querySelectorAll('p'));
+                paragraphs.forEach(p => {
+                    const t = normalize(p.textContent);
+                    if (t.includes('PRECIO POR CAJA:') || t.includes('PRECIO MINIMO SUGERIDO:')) {
+                        p.classList.remove(...marginClasses);
+                        p.classList.add('text-sm', 'mb-1');
+                    }
+                    if (t.startsWith('PRECIO:')) {
+                        // Asegurar margen compacto bajo el precio unitario
+                        p.classList.remove(...marginClasses);
+                        p.classList.add('text-lg', 'mb-1');
+                    }
+                });
+            };
+
             const cards = document.querySelectorAll('.wine-card');
             cards.forEach((card) => {
+                adjustPriceSpacing(card);
                 if (card.querySelector('.cta-consultar-stock')) return;
                 const titleEl = card.querySelector('h3');
                 const productName = titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : 'Producto';
