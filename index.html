@@ -1032,8 +1032,8 @@
             }, { rootMargin: '0px 0px -50% 0px', threshold: 0.1 });
 
             // Adjuntar a cada card
-            const cards = document.querySelectorAll('.wine-card');
-            cards.forEach((card) => io.observe(card));
+            const cardsForIO = document.querySelectorAll('.wine-card');
+            cardsForIO.forEach((card) => io.observe(card));
 
             // Configurar FAB: deep link y UTM propios
             const fab = document.getElementById('fab-whatsapp');
