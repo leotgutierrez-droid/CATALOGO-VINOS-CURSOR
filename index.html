@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://vinosdistintos.netlify.app/">
+    <meta name="description" content="Catálogo mayorista de vinos seleccionados de San Juan y Mendoza: precios por botella y por caja, combos y ofertas.">
+    <meta property="og:title" content="Catálogo Mayorista de Vinos">
+    <meta property="og:description" content="Vinos de San Juan y Mendoza. Precios por botella y por caja. Consultá stock y envíos.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vinosdistintos.netlify.app/">
+    <meta property="og:image" content="https://i.imgur.com/3YXDg9f.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Catálogo Mayorista de Vinos">
+    <meta name="twitter:description" content="Vinos de San Juan y Mendoza. Precios por botella y por caja. Consultá stock y envíos.">
+    <meta name="twitter:image" content="https://i.imgur.com/3YXDg9f.jpeg">
     <title>Catálogo Mayorista de Vinos</title>
     <!-- Carga de Tailwind CSS para estilos modernos y responsivos -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1135,6 +1146,54 @@
                     card.appendChild(cta);
                 }
             });
+
+            // JSON-LD Product/Offer por vino (SEO)
+            const products = [];
+            document.querySelectorAll('.wine-card').forEach(card => {
+                const nameEl = card.querySelector('h3');
+                const imgEl = card.querySelector('img');
+                const priceEl = Array.from(card.querySelectorAll('p')).find(p => /Precio:\s*\$/i.test(p.textContent || ''));
+                if (!nameEl || !imgEl || !priceEl) return;
+                const name = nameEl.textContent.replace(/\s+/g, ' ').trim();
+                const image = imgEl.getAttribute('src');
+                const priceMatch = (priceEl.textContent || '').replace(/\./g,'').match(/\$(\d+)/);
+                const price = priceMatch ? priceMatch[1] : undefined;
+                const id = name.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+                const url = `${location.origin}${location.pathname}#${id}`;
+                if (!price) return;
+                products.push({ name, image, price, url });
+            });
+
+            const makeProductJsonLd = ({ name, image, price, url }) => ({
+                "@context": "https://schema.org",
+                "@type": "Product",
+                "name": name,
+                "image": image,
+                "brand": { "@type": "Brand", "name": "Vinos Distintos" },
+                "category": "Wine",
+                "url": url,
+                "offers": {
+                    "@type": "Offer",
+                    "price": price,
+                    "priceCurrency": "ARS",
+                    "availability": "https://schema.org/InStock"
+                }
+            });
+
+            if (products.length) {
+                const script = document.createElement('script');
+                script.type = 'application/ld+json';
+                script.textContent = JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "ItemList",
+                    "itemListElement": products.map((p, i) => ({
+                        "@type": "ListItem",
+                        "position": i + 1,
+                        "item": makeProductJsonLd(p)
+                    }))
+                });
+                document.head.appendChild(script);
+            }
         })();
     </script>
 </body>

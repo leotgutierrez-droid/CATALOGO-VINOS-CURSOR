@@ -1,0 +1,20 @@
+[build]
+  publish = "."
+
+# Noindex para deploy previews
+[[headers]]
+  for = "/"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Aplicar noindex a todas las rutas en previews
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[context.deploy-preview]
+  command = ""
+
+[context.production]
+  # En producción, permitir indexación (sin cabecera noindex)
