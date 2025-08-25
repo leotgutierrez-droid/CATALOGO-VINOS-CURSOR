@@ -1039,7 +1039,15 @@
                 cta.textContent = 'Consultar stock';
                 cta.addEventListener('click', () => trackClick(productName));
 
-                // Insert after details if exists, else at end of card
+                // Prefer: insert right after the "VER OPINIONES" link
+                const links = Array.from(card.querySelectorAll('a'));
+                const reviewsLink = links.reverse().find(a => (a.textContent || '').trim().toUpperCase().includes('VER OPINIONES'));
+                if (reviewsLink) {
+                    reviewsLink.insertAdjacentElement('afterend', cta);
+                    return;
+                }
+
+                // Fallback: after details, else at end
                 const details = card.querySelector('details');
                 if (details && details.parentNode === card) {
                     details.insertAdjacentElement('afterend', cta);
