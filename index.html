@@ -946,7 +946,7 @@
     </footer>
 
     <!-- Botón de WhatsApp flotante (visible en todas las pantallas) -->
-    <a href="https://wa.me/+5491166313941" target="_blank" class="fixed bottom-4 right-4 z-50 p-2 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600">
+    <a href="https://wa.me/5491166313941" target="_blank" class="fixed bottom-4 right-4 z-50 p-2 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600">
         <i class="fab fa-whatsapp text-xl"></i>
     </a>
 
@@ -991,12 +991,7 @@
     </script>
     <script>
         (function() {
-            const findWhatsappNumber = () => {
-                const anchor = document.querySelector('a[href^="https://wa.me/"]');
-                if (!anchor) return '5491166313941';
-                const digits = anchor.getAttribute('href').replace(/\D/g, '');
-                return digits || '5491166313941';
-            };
+            const findWhatsappNumber = () => '5491166313941';
 
             const slugify = (text) => {
                 return (text || '')
