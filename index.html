@@ -1043,6 +1043,12 @@
                 const links = Array.from(card.querySelectorAll('a'));
                 const reviewsLink = links.reverse().find(a => (a.textContent || '').trim().toUpperCase().includes('VER OPINIONES'));
                 if (reviewsLink) {
+                    // Normalize spacing: reduce gap above reviews and match gap to CTA
+                    const mtClasses = ['mt-0','mt-1','mt-2','mt-3','mt-4','mt-5','mt-6','mt-7','mt-8'];
+                    reviewsLink.classList.remove(...mtClasses);
+                    reviewsLink.classList.add('mt-2');
+                    cta.classList.remove(...mtClasses);
+                    cta.classList.add('mt-2');
                     reviewsLink.insertAdjacentElement('afterend', cta);
                     return;
                 }
