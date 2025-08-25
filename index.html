@@ -989,5 +989,70 @@
             });
         });
     </script>
+    <script>
+        (function() {
+            const findWhatsappNumber = () => {
+                const anchor = document.querySelector('a[href^="https://wa.me/"]');
+                if (!anchor) return '5491166313941';
+                const digits = anchor.getAttribute('href').replace(/\D/g, '');
+                return digits || '5491166313941';
+            };
+
+            const slugify = (text) => {
+                return (text || '')
+                    .toString()
+                    .toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '-');
+            };
+
+            const buildWhatsappLink = (productName) => {
+                const phone = findWhatsappNumber();
+                const message = `Hola, me interesa "${productName}". ¿Hay stock? Soy de [Ciudad] y quiero [6] botellas.`;
+                const text = encodeURIComponent(message);
+                const utm = `utm_source=site&utm_medium=cta&utm_campaign=consultar_stock&utm_content=${encodeURIComponent(slugify(productName))}`;
+                return `https://wa.me/${phone}?text=${text}&${utm}`;
+            };
+
+            const trackClick = (productName) => {
+                try {
+                    const key = `ctaClicks:${productName}`;
+                    const current = Number(localStorage.getItem(key) || '0');
+                    localStorage.setItem(key, String(current + 1));
+                } catch (e) {
+                    // ignore
+                }
+                if (navigator.sendBeacon) {
+                    const payload = new Blob([JSON.stringify({ p: productName, ts: Date.now() })], { type: 'application/json' });
+                    // Placeholder beacon (no backend). Kept for future analytics endpoint.
+                    navigator.sendBeacon('https://example.invalid/beacon', payload);
+                }
+            };
+
+            const cards = document.querySelectorAll('.wine-card');
+            cards.forEach((card) => {
+                if (card.querySelector('.cta-consultar-stock')) return;
+                const titleEl = card.querySelector('h3');
+                const productName = titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : 'Producto';
+                const cta = document.createElement('a');
+                cta.className = 'cta-consultar-stock inline-block mt-2 px-3 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm';
+                cta.href = buildWhatsappLink(productName);
+                cta.target = '_blank';
+                cta.rel = 'noopener';
+                cta.textContent = 'Consultar stock';
+                cta.addEventListener('click', () => trackClick(productName));
+
+                // Insert after details if exists, else at end of card
+                const details = card.querySelector('details');
+                if (details && details.parentNode === card) {
+                    details.insertAdjacentElement('afterend', cta);
+                } else {
+                    card.appendChild(cta);
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
