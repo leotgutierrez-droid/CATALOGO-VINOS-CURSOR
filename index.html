@@ -946,7 +946,7 @@
     </footer>
 
     <!-- Botón de WhatsApp flotante (visible en todas las pantallas) -->
-    <a href="https://wa.me/5491166313941" target="_blank" class="fixed bottom-4 right-4 z-50 p-2 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600">
+    <a id="fab-whatsapp" aria-label="Escribinos por WhatsApp" href="https://wa.me/5491166313941" target="_blank" class="fixed bottom-4 right-4 z-50 p-2 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600">
         <i class="fab fa-whatsapp text-xl"></i>
     </a>
 
@@ -1010,6 +1010,56 @@
                 const utm = `utm_source=site&utm_medium=cta&utm_campaign=consultar_stock&utm_content=${encodeURIComponent(slugify(productName))}`;
                 return `https://wa.me/${phone}?text=${text}&${utm}`;
             };
+
+            // Deep link en móviles y mensaje con último vino visto para el FAB
+            const isMobile = () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const setLastViewedProduct = (name) => {
+                try { localStorage.setItem('lastViewedProduct', name); } catch (e) {}
+            };
+            const getLastViewedProduct = () => {
+                try { return localStorage.getItem('lastViewedProduct') || ''; } catch (e) { return ''; }
+            };
+
+            // Marcar último vino visto al entrar al viewport
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const titleEl = entry.target.querySelector('h3');
+                        const name = titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : '';
+                        if (name) setLastViewedProduct(name);
+                    }
+                });
+            }, { rootMargin: '0px 0px -50% 0px', threshold: 0.1 });
+
+            // Adjuntar a cada card
+            const cards = document.querySelectorAll('.wine-card');
+            cards.forEach((card) => io.observe(card));
+
+            // Configurar FAB: deep link y UTM propios
+            const fab = document.getElementById('fab-whatsapp');
+            if (fab) {
+                fab.addEventListener('click', (e) => {
+                    const phone = findWhatsappNumber();
+                    const product = getLastViewedProduct() || 'Catálogo general';
+                    const msg = `Hola! Vengo desde el botón flotante. Me interesa "${product}".`;
+                    const text = encodeURIComponent(msg);
+                    const utm = `utm_source=site&utm_medium=fab&utm_campaign=whatsapp_fab`;
+                    const webUrl = `https://wa.me/${phone}?text=${text}&${utm}`;
+                    const appUrl = `whatsapp://send?phone=${phone}&text=${text}`;
+                    if (isMobile()) {
+                        // Intentar app primero; si falla, abrir webUrl
+                        try {
+                            window.location.href = appUrl;
+                            setTimeout(() => { window.open(webUrl, '_blank', 'noopener'); }, 400);
+                        } catch (err) {
+                            window.open(webUrl, '_blank', 'noopener');
+                        }
+                    } else {
+                        // Desktop: abrir webUrl en la misma acción del click
+                        fab.setAttribute('href', webUrl);
+                    }
+                }, { passive: true });
+            }
 
             const trackClick = (productName) => {
                 try {
