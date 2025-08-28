@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Vinos</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fff; color: #222; }
+    .seccion { margin: 40px; }
+    h2 { border-bottom: 2px solid #D4A017; padding-bottom: 10px; color: #800000; }
+    .vino-card { display: inline-block; width: 200px; margin: 15px; vertical-align: top; text-align: center; }
+    .vino-img { width: 100%; border-radius: 8px; }
+    .vino-nombre { font-weight: bold; margin: 10px 0 5px 0; }
+    .vino-descripcion { font-size: 0.9em; margin: 5px 0; }
+    .vino-precio { color: #800000; font-weight: bold; }
+    .vino-precio-sugerido { font-size: 0.85em; color: #555; text-decoration: line-through; }
+    .vino-vivino img { width: 24px; margin-top: 5px; }
+  </style>
+</head>
+<body>
+
+  <h1>Catálogo de Vinos</h1>
+
+  <!-- SECCIÓN MENDOZA -->
+  <div class="seccion" id="mendoza">
+    <h2>Mendoza</h2>
+
+    <!-- Vino nuevo agregado antes de Durmientes -->
+    <div class="vino-card">
+      <img src="https://i.imgur.com/N8bDLIQ.jpeg" alt="LAS PERDICES 375ml" class="vino-img">
+      <h3 class="vino-nombre">LAS PERDICES 375 ml</h3>
+      <p class="vino-descripcion">Disfrutá de este vino único de 375ml, ideal para tus momentos especiales.</p>
+      <p class="vino-precio">$3.300</p>
+      <p class="vino-precio-sugerido">$4.500</p>
+      <a href="#" class="vino-vivino"><img src="icono-vivino.png" alt="Vivino"></a>
+    </div>
+
+    <!-- Vino Durmientes -->
+    <div class="vino-card">
+      <img src="ruta_durmientes.jpg" alt="Durmientes" class="vino-img">
+      <h3 class="vino-nombre">Durmientes</h3>
+      <p class="vino-descripcion">Descripción de Durmientes...</p>
+      <p class="vino-precio">$3.900</p>
+      <p class="vino-precio-sugerido">$4.800</p>
+      <a href="#" class="vino-vivino"><img src="icono-vivino.png" alt="Vivino"></a>
+    </div>
+
+    <!-- Otros vinos de Mendoza -->
+    <!-- Copiá aquí los demás vinos que tenías en Mendoza -->
+
+  </div>
+
+  <!-- SECCIÓN SAN JUAN -->
+  <div class="seccion" id="san-juan">
+    <h2>San Juan</h2>
+    <!-- Tus vinos de San Juan aquí -->
+  </div>
+
+  <!-- SECCIÓN ALTA GAMA -->
+  <div class="seccion" id="alta-gama">
+    <h2>Alta Gama</h2>
+    <!-- Tus vinos de Alta Gama aquí -->
+  </div>
+
+  <!-- SECCIÓN DEGUSTACIÓN -->
+  <div class="seccion" id="degustacion">
+    <h2>Degustación</h2>
+    <!-- Tus vinos de Degustación aquí -->
+  </div>
+
+</body>
+</html>
