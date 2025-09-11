@@ -1,0 +1,131 @@
+name: Aplicar cambios del catálogo desde Issues
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  apply:
+    if: >
+      (github.event_name == 'issues') ||
+      (github.event_name == 'issue_comment' && github.event.issue.state == 'open')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Procesar comando del Issue/Comentario
+        uses: actions/github-script@v7
+        env:
+          TARGET_BRANCH: main
+          PATH_TO_FILE: index.html
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const isComment = context.eventName === 'issue_comment';
+            const issue = context.payload.issue;
+            const issue_number = issue.number;
+            const author = (isComment ? context.payload.comment.user.login : issue.user.login);
+            const text = (isComment ? context.payload.comment.body : issue.body) || '';
+
+            function parseAmount(s){ if(!s) return null; const digits = s.replace(/[^\d]/g,''); return digits? parseInt(digits,10): null; }
+            function formatARS(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+            function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+            const cmdChange = /Cambiar precio:\s*"(.+?)"\s*→\s*\$?\s*([\d\.\,]+)/i;
+            const cmdRemove = /Quitar producto:\s*"(.+?)"/i;
+            const cmdAdd = /Agregar producto:\s*(.+?)\s*\|\s*\$?\s*([\d\.\,]+)\s*(?:\|\s*\$?\s*([\d\.\,]+))?\s*(?:\|\s*([^|]+))?\s*(?:\|\s*([\w\.\-]+\.(?:png|jpg|jpeg|webp|gif)))?\s*$/i;
+
+            let action=null, params=null;
+            let m;
+            if ((m=text.match(cmdChange))) {
+              action='change_price'; params={name:m[1].trim(), price: parseAmount(m[2])};
+            } else if ((m=text.match(cmdRemove))) {
+              action='remove_product'; params={name:m[1].trim()};
+            } else if ((m=text.match(cmdAdd))) {
+              action='add_product'; params={name:m[1].trim(), price: parseAmount(m[2]), box: parseAmount(m[3]||''), desc:(m[4]||'').trim(), image:(m[5]||'').trim()};
+            } else {
+              core.setFailed('Comando no reconocido. Usa uno de:\n- Cambiar precio: "Nombre" → $NNNN\n- Quitar producto: "Nombre"\n- Agregar producto: Nombre | $unit | $box(opc) | Descripción(opc) | imagen.png(opc)');
+              return;
+            }
+
+            const path = process.env.PATH_TO_FILE || 'index.html';
+            const branch = process.env.TARGET_BRANCH || 'main';
+
+            const fileData = await github.repos.getContent({ owner, repo, path, ref: branch });
+            if (Array.isArray(fileData.data) || fileData.data.type !== 'file') {
+              core.setFailed(`La ruta ${path} no es un archivo.`);
+              return;
+            }
+            let content = Buffer.from(fileData.data.content, 'base64').toString('utf8');
+            const sha = fileData.data.sha;
+
+            const name = params?.name;
+            const esc = name ? escRe(name) : null;
+
+            function findSectionIdx(txt, productName){
+              if (!productName) return -1;
+              const reHeading = new RegExp(`^###\\s*${escRe(productName)}[^\\n]*$`, 'mi');
+              const mm = txt.match(reHeading);
+              if (mm) return mm.index;
+              const lower = txt.toLowerCase();
+              return lower.indexOf(productName.toLowerCase());
+            }
+
+            let updated = content;
+            let commitMessage = '';
+
+            if (action === 'change_price') {
+              const idx = findSectionIdx(content, name);
+              if (idx < 0) { core.setFailed(`No encontré el producto "${name}" en ${path}.`); return; }
+              const before = content.slice(0, idx);
+              let after = content.slice(idx);
+
+              const unit = params.price;
+              const box = unit * 6;
+              let changed = false;
+
+              after = after.replace(/Precio:\s*\$[\d\.\,]+/, () => { changed = true; return `Precio: $${formatARS(unit)}`; });
+              after = after.replace(/Precio por caja:\s*\$[\d\.\,]+/, () => `Precio por caja: $${formatARS(box)}`);
+
+              if (!changed) { core.setFailed(`Encontré "${name}" pero no hallé la línea "Precio: $...".`); return; }
+
+              updated = before + after;
+              commitMessage = `chore: Cambia precio "${name}" a $${formatARS(unit)} (caja $${formatARS(box)}) via Issue #${issue_number}`;
+
+            } else if (action === 'remove_product') {
+              const reBlock = new RegExp(`^###\\s*${esc}[^\\n]*\\n[\\s\\S]*?(?=^###\\s|\\Z)`, 'mi');
+              const before = updated;
+              updated = updated.replace(reBlock, '');
+              if (before === updated) { core.setFailed(`No encontré el bloque del producto "${name}" para eliminar.`); return; }
+              commitMessage = `chore: Quita producto "${name}" via Issue #${issue_number}`;
+
+            } else if (action === 'add_product') {
+              const unit = params.price;
+              const box = params.box || unit * 6;
+              const desc = params.desc ? `\n${params.desc}\n` : '\n';
+              const img = params.image ? `\n<img src="assets/${params.image}" alt="${name}" />\n` : '\n';
+              const block = `\n### ${name}\n\nPrecio: $${formatARS(unit)}\n\nPrecio por caja: $${formatARS(box)}\n${desc}${img}VER FICHA\n`;
+              updated = updated + block;
+              commitMessage = `chore: Agrega producto "${name}" via Issue #${issue_number}`;
+            }
+
+            if (updated === content) { core.setFailed('No se aplicó ningún cambio.'); return; }
+
+            const resp = await github.repos.createOrUpdateFileContents({
+              owner, repo, path, message: commitMessage,
+              content: Buffer.from(updated, 'utf8').toString('base64'),
+              sha, branch
+            });
+
+            const commitUrl = resp.data?.commit?.html_url || '';
+            await github.issues.createComment({
+              owner, repo, issue_number,
+              body: `✅ Cambio aplicado.\n\n**Acción:** ${action}\n**Producto:** ${name || '(no aplica)'}\n**Commit:** ${commitUrl}\n\nCuando GitHub registre el commit, Netlify hará el deploy automático.`
+            });
+
+            await github.issues.update({ owner, repo, issue_number, state: 'closed' });
