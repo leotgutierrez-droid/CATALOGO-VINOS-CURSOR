@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRUEBA - Catálogo Vinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #f8f8f8; color: #333; }
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
+        .wine-card { background-color: #ffffff; border: 1px solid #e0e0e0; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; padding: 1.5rem; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .wine-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+        .section-title { border-bottom: 3px solid #9C136E; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+        .image-container { width: 100%; height: 12rem; overflow: hidden; border-radius: 0.5rem; margin-bottom: 1rem; display: flex; justify-content: center; align-items: center; }
+        .image-container img { width: 100%; height: 100%; object-fit: contain; background-color: white; }
+        :root { --main-custom-color: #9C136E; --darker-custom-color: #7B0F58; }
+        .navbar { background-color: var(--main-custom-color); padding: 0.5rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .navbar-link { color: white; padding: 0.3rem 0.6rem; border-radius: 0.25rem; transition: background-color 0.2s ease-in-out; font-weight: 700; white-space: nowrap; }
+        .navbar-link:hover { background-color: var(--darker-custom-color); }
+        .header-background { background-image: url('https://i.imgur.com/zxVO8YF.jpeg'); background-size: cover; background-repeat: no-repeat; background-position: center bottom; position: relative; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 150px; }
+        .text-main-color { color: var(--main-custom-color); }
+        .text-varietal { font-weight: normal; color: rgba(156, 19, 110, 0.7); font-size: 0.8em; }
+        details summary { cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.875rem; margin-top: 0.5rem; margin-bottom: 0.5rem; display: block; }
+        details summary:hover { color: #0056b3; }
+        details summary::-webkit-details-marker { display: none; }
+        details summary::marker { display: none; }
+        details summary:before { font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f0d7"; margin-right: 0.5rem; transition: transform 0.2s ease-in-out; display: inline-block; }
+        details[open] summary:before { content: "\f0d8"; transform: rotate(180deg); }
+        @media (max-width: 639px) { 
+            .header-content h1 { font-size: 1.25rem; line-height: 1.2; }
+            h2.section-title { font-size: 1rem; }
+            .wine-card h3 { font-size: 1.125rem; margin-bottom: 0.25rem; line-height: 1.1; }
+            #combined-boxes .wine-card h3 { font-size: 0.9rem; }
+            .navbar-link { font-size: 0.55rem; padding: 0.3rem 0.3rem; }
+            .wine-card .text-lg { font-size: 1rem; margin-bottom: 0.25rem; }
+            .wine-card p.text-sm.text-gray-600 { margin-top: 0.25rem; }
+            #volume-discount ul li strong { font-size: 0.9em; }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <header class="text-center mb-4 header-background">
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-2">VENDÉ ALGO DIS<span class="text-main-color-highlight">TINTO</span></h1>
+        </div>
+    </header>
+
+    <nav class="navbar mb-6">
+        <div class="container mx-auto flex flex-wrap justify-center space-x-2">
+            <a href="#san-juan-wines" class="navbar-link">SAN JUAN</a>
+            <a href="#mendoza-wines" class="navbar-link">MENDOZA</a>
+            <a href="#combined-boxes" class="navbar-link">COMBOS</a>
+            <a href="#volume-discount" class="navbar-link">DESCUENTOS</a>
+        </div>
+    </nav>
+
+    <section id="mendoza-wines" class="mb-12">
+        <h2 class="text-3xl sm:text-4xl font-bold section-title text-main-color mb-6">SELECCIONADOS MENDOZA</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Vino: Le Mal du Bec Malbec -->
+            <div class="wine-card p-6 rounded-lg shadow-md">
+                <div class="image-container">
+                    <img src="https://i.imgur.com/4ybdgsG.jpeg" alt="Vino Le Mal du Bec Malbec Mendoza mayorista">
+                </div>
+                <h3 class="text-2xl font-bold text-main-color mb-2">Le Mal du Bec<span class="text-varietal"> malbec</span></h3>
+                <p class="text-lg font-bold text-gray-800 mb-1">Precio: $6.600</p>
+                <p class="text-sm text-gray-600 mb-1">Precio por caja: $39.600</p>
+                <p class="text-sm text-gray-500 mb-4">Precio mínimo sugerido: $8.200</p>
+                <details>
+                    <summary>VER FICHA</summary>
+                    <div class="description-content">
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Bodega:</span> Le Mal du Bec.</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Origen:</span> Barrancas, Maipú, Mendoza (760 msnm).</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Elaboración:</span> Cosecha 100% manual, despalillado y maceración pre-fermentativa durante 48 hs a bajas temperaturas. Fermentación con levaduras seleccionadas durante 12 días a 24 °C y fermentación maloláctica 100% natural.</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Crianza:</span> 6 meses en barricas de roble francés de 2° uso.</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Enólogo:</span> Renaud Balaguer.</p>
+                        <p class="text-sm text-gray-700 mt-3"><span class="font-semibold">Notas de cata:</span> De color rojo rubí intenso con reflejos violáceos. Concentración de fruta, entrada dulce y amable. Acidez media, equilibrada. Final agradable en boca.</p>
+                    </div>
+                </details>
+                <a href="#" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+            </div>
+
+            <!-- ✅ NUEVO VINO: Artesano de Argento Malbec Orgánico -->
+            <div class="wine-card p-6 rounded-lg shadow-md">
+                <div class="image-container">
+                    <img src="https://i.imgur.com/0Kp6P7M.png" alt="Vino Artesano de Argento Malbec Orgánico Mendoza mayorista">
+                </div>
+                <h3 class="text-2xl font-bold text-main-color mb-2">Artesano de Argento<span class="text-varietal"> malbec orgánico</span></h3>
+                <p class="text-lg font-bold text-gray-800 mb-1">Precio: $7.000</p>
+                <p class="text-sm text-gray-600 mb-1">Precio por caja: $42.000</p>
+                <p class="text-sm text-gray-500 mb-4">Precio mínimo sugerido: $9.500</p>
+                <details>
+                    <summary>VER FICHA</summary>
+                    <div class="description-content">
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Bodega:</span> Bodega Artesano de Argento.</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Origen:</span> Valle de Uco, Mendoza, Argentina (1100 msnm).</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Elaboración:</span> Uvas orgánicas certificadas. Fermentación en tanques de acero inoxidable con control de temperatura.</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Crianza:</span> 6 meses en barricas de roble francés de segundo uso.</p>
+                        <p class="text-sm text-gray-700 mb-1"><span class="font-semibold">Enólogo:</span> María González.</p>
+                        <p class="text-sm text-gray-700 mt-3"><span class="font-semibold">Notas de cata:</span> Color rojo violáceo intenso. Aromas a frutas rojas maduras (cerezas, frambuesas) con sutiles notas de vainilla y chocolate. En boca es equilibrado, con taninos suaves y final persistente. Vino orgánico certificado.</p>
+                    </div>
+                </details>
+                <a href="#" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+            </div>
+            <!-- FIN NUEVO VINO -->
+
+            <!-- Tus otros vinos de Mendoza aquí -->
+        </div>
+    </section>
+</body>
+</html>
