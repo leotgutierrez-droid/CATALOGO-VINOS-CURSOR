@@ -241,11 +241,14 @@
             h2.section-title {
                 font-size: 1rem; /* text-base, mucho más pequeño que text-lg */
             }
-            /* Achica los nombres de los vinos */
+            /* Agranda los nombres de los vinos en móvil */
             .wine-card h3 {
-                font-size: 1.125rem; /* Reducido para móviles */
-                margin-bottom: 0.25rem; /* mb-1, reducido para menos espacio con el precio */
-                line-height: 1.1; /* Interlineado menor entre las líneas del nombre/varietal */
+                font-size: 1.25rem; /* Más grande que el precio */
+                margin-bottom: 0.5rem; /* mb-2, más espacio con el precio */
+                line-height: 1.2; /* Interlineado mejorado */
+                white-space: nowrap; /* Evita saltos de línea */
+                overflow: hidden;
+                text-overflow: ellipsis; /* Puntos suspensivos si es muy largo */
             }
             /* Achica los nombres de los mixes (h3 dentro de #combined-boxes) */
             #combined-boxes .wine-card h3 {
@@ -256,13 +259,23 @@
                 font-size: 0.55rem; /* Ajustado para asegurar que todos los ítems quepan en una línea */
                 padding: 0.3rem 0.3rem; /* Ajuste de padding para mayor compactación */
             }
-            /* Achica un poco los precios unitarios */
-            .wine-card .text-lg { /* Seleccionando específicamente el precio */
-                font-size: 1rem; /* text-base, más pequeño que text-xl */
-                margin-bottom: 0.25rem; /* mb-1, reducido para menos espacio con el precio por caja */
+            /* Unifica el interlineado de los precios */
+            .wine-card .text-lg { /* Precio unitario */
+                font-size: 1rem; /* text-base */
+                margin-bottom: 0.25rem; /* mb-1 */
             }
-            .wine-card p.text-sm.text-gray-600 { /* Targeting the box price paragraph */
-                margin-top: 0.25rem; /* Pequeño margen superior para separar del precio unitario */
+            .wine-card p.text-sm.text-gray-600 { /* Precio por caja */
+                margin-top: 0.25rem; /* mt-1 */
+                margin-bottom: 0.25rem; /* mb-1 */
+            }
+            .wine-card p.text-sm.text-gray-500 { /* Precio sugerido */
+                margin-top: 0.25rem; /* mt-1 */
+                margin-bottom: 1rem; /* mb-4 */
+            }
+            /* Ajusta el botón VER OPINIONES */
+            .wine-card a[href*="vivino"] {
+                margin-top: 0.5rem; /* mt-2, más cerca de VER FICHA */
+                margin-bottom: 0.5rem; /* mb-2, separación del botón de carrito */
             }
             /* Ajuste para que "¡consultanos!" sea más pequeño y quepa en una línea */
             #volume-discount ul li strong {
@@ -295,7 +308,7 @@
 
     <!-- Sección de Vinos Exclusivos -->
     <section id="exclusive-wines" class="mb-12 pt-0">
-        <h2 class="text-3xl sm:text-4xl font-bold section-title text-main-color mb-6">EXCLUSIVOS EN LA ZONA</h2>
+        <h2 class="text-2xl sm:text-4xl font-bold section-title text-main-color mb-6">EXCLUSIVOS EN LA ZONA</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
             <!-- Vino: Elcha Malbec -->
@@ -318,6 +331,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/elcha-malbec/w/3905779?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Elcha Malbec', 5600, 'https://i.imgur.com/4f5soTX.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: Las Invernadas Malbec -->
@@ -340,6 +356,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/las-invernadas-malbec/w/1768932?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Las Invernadas Malbec', 6700, 'https://i.imgur.com/PcH63dK.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: Elephant Gun tinto de garage -->
@@ -363,6 +382,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/elephant-gun-malbec-de-garage/w/6714812?srsltid=AfmBOop7LeV16xM1110kdSgxMQL9F3vEeMN6vTahVpQPJFyKhM8_3Qo0#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Elephant Gun', 7500, 'https://i.imgur.com/y1Zsx4l.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
 
@@ -387,6 +409,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/el-elefante-malbec-de-garage/w/5926631?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Elefante in the Room Malbec', 9100, 'https://i.imgur.com/ugVKBXt.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: Elefante in the Room Cabernet -->
@@ -410,6 +435,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/el-elefante-cabernet-sauvignon-de-garage/w/9001428?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Elefante in the Room Cabernet', 9100, 'https://i.imgur.com/83DKGZF.png')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: Somewhere Else Malbec -->
@@ -433,6 +461,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/somewhere-else-malbec/w/6786139?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Somewhere Else Malbec', 9800, 'https://i.imgur.com/MXcCDF7.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Nuevo Vino: Somewhere Else Cabernet Franc -->
@@ -456,6 +487,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/somewhere-else-cabernet-franc/w/7305318?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Somewhere Else Cabernet Franc', 9800, 'https://i.imgur.com/dK45N3s.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Nuevo Vino: Somewhere Else Petit Verdot -->
@@ -479,6 +513,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/somewhere-else-petit-verdot/w/7562181?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Somewhere Else Petit Verdot', 9800, 'https://i.imgur.com/te7Jk79.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
 
@@ -503,6 +540,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/xumek-malbec/w/6779476?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Xumek Malbec', 11500, 'https://i.imgur.com/wh5ZlQx.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Nuevo Vino: Xumek Syrah -->
@@ -526,6 +566,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/xumek-syrah/w/6807860?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Xumek Syrah', 11500, 'https://i.imgur.com/qapXxN2.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
         </div>
@@ -533,7 +576,7 @@
 
     <!-- Sección de Vinos Ofertas -->
     <section id="offers-wines" class="mb-12">
-        <h2 class="text-3xl sm:text-4xl font-bold section-title text-main-color mb-6">OFERTAS</h2>
+        <h2 class="text-2xl sm:text-4xl font-bold section-title text-main-color mb-6">OFERTAS DESTACADAS</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
 
@@ -560,6 +603,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/dona-paula-unique-malbec/w/8143125?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Doña Paula Unique', 9500, 'https://i.imgur.com/De5dWLe.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: Artesano de Argento Malbec -->
@@ -583,6 +629,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/artesano-de-argento-malbec/w/1234567" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Artesano de Argento', 6500, 'https://i.imgur.com/0Kp6P7M.png')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: Riglos Cabernet Franc -->
@@ -606,6 +655,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/bodega-riglos-quinto-cabernet-franc/w/7480304?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Riglos Cabernet Franc', 9500, 'https://i.imgur.com/Ld58Wz6.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Nuevo Vino: Gaia Malbec 2021 -->
@@ -613,7 +665,7 @@
                 <div class="image-container">
                     <img src="https://i.imgur.com/tRfsCQ9.png" alt="Gaia Malbec 2021">
                 </div>
-                <h3 class="text-2xl font-bold text-main-color mb-2">Gaia<span class="text-varietal"> malbec 2021</span></h3>
+                <h3 class="text-2xl font-bold text-main-color mb-2">Gaia<span class="text-varietal"> malbec orgánico</span></h3>
                 <p class="text-lg font-bold text-gray-800 mb-1">Precio: $16.000</p>
                 <p class="text-sm text-gray-600 mb-1">Precio por caja: $96.000</p>
                 <p class="text-sm text-gray-500 mb-4">Precio mínimo sugerido: $19.500</p>
@@ -630,6 +682,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/domaine-bousquet-gaia-malbec/w/10158437" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Gaia Malbec', 16000, 'https://i.imgur.com/tRfsCQ9.png')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: Petite Fleur Malbec -->
@@ -653,6 +708,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/monteviejo-petite-fleur-malbec/w/1679537?ref=nav-search#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('Petite Fleur Malbec', 18500, 'https://i.imgur.com/WSyNCsm.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: El Enemigo Malbec -->
@@ -677,6 +735,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/el-enemigo-malbec/w/1674523#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('El Enemigo Malbec', 19500, 'https://i.imgur.com/h9SCkqi.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
             <!-- Vino: El Enemigo Cabernet Franc -->
@@ -701,6 +762,9 @@
                     </div>
                 </details>
                 <a href="https://www.vivino.com/ES/es/el-enemigo-malbec/w/1674523#all_reviews" target="_blank" class="mt-4 text-blue-600 hover:underline text-xs">VER OPINIONES</a>
+                <button onclick="addToCart('El Enemigo Cabernet Franc', 19500, 'https://i.imgur.com/6aVrFji.jpeg')" class="mt-2 w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition-colors">
+                    <i class="fas fa-cart-plus mr-2"></i>Agregar al Carrito
+                </button>
             </div>
 
         </div>
@@ -747,43 +811,179 @@
         <p class="text-gray-600 mt-4 text-sm">&copy; 2025 Tu Empresa de Vinos. Todos los derechos reservados.</p>
     </footer>
 
+    <!-- Carrito de compras flotante -->
+    <div id="cart" class="fixed bottom-4 left-4 z-50 bg-white rounded-lg shadow-lg p-4 max-w-sm hidden">
+        <h3 class="font-bold text-lg mb-2">Tu Pedido</h3>
+        <div id="cart-items"></div>
+        <div id="cart-total" class="font-bold text-lg mt-2"></div>
+        <button id="send-whatsapp" class="w-full bg-green-500 text-white py-2 px-4 rounded mt-2 hover:bg-green-600">
+            Enviar por WhatsApp
+        </button>
+        <button id="clear-cart" class="w-full bg-gray-500 text-white py-2 px-4 rounded mt-1 hover:bg-gray-600">
+            Limpiar Carrito
+        </button>
+    </div>
+
     <!-- Botón de WhatsApp flotante (visible en todas las pantallas) -->
     <a href="https://wa.me/+5491166313941" target="_blank" class="fixed bottom-4 right-4 z-50 p-2 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600">
         <i class="fab fa-whatsapp text-xl"></i>
     </a>
 
+    <!-- Botón de carrito flotante -->
+    <button id="cart-toggle" class="fixed bottom-16 right-4 z-50 p-3 rounded-full bg-purple-500 text-white shadow-lg hover:bg-purple-600">
+        <i class="fas fa-shopping-cart text-xl"></i>
+        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center">0</span>
+    </button>
+
     <script>
+        // Carrito de compras
+        let cart = [];
+        let cartCount = 0;
+
+        function addToCart(name, price, image) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, image, quantity: 1 });
+            }
+            updateCartDisplay();
+            showCartNotification();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const cartCountElement = document.getElementById('cart-count');
+            
+            cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCountElement.textContent = cartCount;
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex justify-between items-center mb-2 p-2 bg-gray-50 rounded';
+                itemDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <img src="${item.image}" alt="${item.name}" class="w-8 h-8 rounded mr-2">
+                        <span class="text-sm">${item.name}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <button onclick="updateQuantity('${item.name}', -1)" class="bg-gray-300 px-2 py-1 rounded text-xs">-</button>
+                        <span class="mx-2 text-sm">${item.quantity}</span>
+                        <button onclick="updateQuantity('${item.name}', 1)" class="bg-gray-300 px-2 py-1 rounded text-xs">+</button>
+                        <span class="ml-2 text-sm font-bold">$${itemTotal.toLocaleString()}</span>
+                    </div>
+                `;
+                cartItems.appendChild(itemDiv);
+            });
+            
+            // Aplicar descuentos automáticos
+            let discount = 0;
+            let discountText = '';
+            let discountMessage = '';
+            
+            if (cartCount >= 6) {
+                discount = total * 0.03; // 3% de descuento
+                discountText = ' (3% descuento aplicado)';
+            } else {
+                const remaining = 6 - cartCount;
+                discountMessage = `<div class="text-sm text-orange-600">¡Faltan ${remaining} vino${remaining > 1 ? 's' : ''} para obtener 3% de descuento!</div>`;
+            }
+            
+            const finalTotal = total - discount;
+            cartTotal.innerHTML = `
+                <div class="text-sm text-gray-600">Subtotal: $${total.toLocaleString()}</div>
+                ${discount > 0 ? `<div class="text-sm text-green-600">Descuento: -$${discount.toLocaleString()}${discountText}</div>` : ''}
+                ${discountMessage}
+                <div class="text-lg">Total: $${finalTotal.toLocaleString()}</div>
+            `;
+        }
+
+        function updateQuantity(name, change) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(item => item.name !== name);
+                }
+                updateCartDisplay();
+            }
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartDisplay();
+        }
+
+        function showCartNotification() {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50';
+            notification.textContent = '¡Agregado al carrito!';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+
+        function sendWhatsApp() {
+            let message = '🍷 *PEDIDO DE VINOS* 🍷\n\n';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                message += `• ${item.name} x${item.quantity} = $${itemTotal.toLocaleString()}\n`;
+            });
+            
+            // Aplicar descuentos
+            let discount = 0;
+            if (cartCount >= 3) discount = total * 0.05;
+            if (cartCount >= 10) discount = total * 0.10;
+            
+            const finalTotal = total - discount;
+            message += `\n*Total: $${finalTotal.toLocaleString()}*`;
+            if (discount > 0) {
+                message += `\n(Descuento aplicado: -$${discount.toLocaleString()})`;
+            }
+            
+            const whatsappUrl = `https://wa.me/+5491166313941?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Obtener todos los enlaces de navegación
+            // Carrito
+            document.getElementById('cart-toggle').addEventListener('click', function() {
+                const cart = document.getElementById('cart');
+                cart.classList.toggle('hidden');
+            });
+            
+            document.getElementById('send-whatsapp').addEventListener('click', sendWhatsApp);
+            document.getElementById('clear-cart').addEventListener('click', clearCart);
+
+            // Navegación suave
             const navLinks = document.querySelectorAll('.navbar-link');
             const navbar = document.querySelector('.navbar');
 
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
-                    // Prevenir el comportamiento predeterminado del enlace (salto instantáneo)
                     e.preventDefault();
-
-                    // Obtener el ID del objetivo desde el atributo href
                     const targetId = this.getAttribute('href');
 
-                    // Si el objetivo es 'top', desplázate al inicio de la página
                     if (targetId === '#top') {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth' // Desplazamiento suave
-                        });
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                     } else {
-                        // Obtener el elemento objetivo
                         const targetElement = document.querySelector(targetId);
-
                         if (targetElement) {
-                            // Calcular la posición a la que desplazarse, ajustando para la barra de navegación fija
                             const offsetTop = targetElement.offsetTop;
-                            const navbarHeight = navbar.offsetHeight; // Altura de la barra de navegación dinámica
-
+                            const navbarHeight = navbar.offsetHeight;
                             window.scrollTo({
-                                top: offsetTop - navbarHeight - 20, // Resta la altura de la barra y un poco más de padding
-                                behavior: 'smooth' // Desplazamiento suave
+                                top: offsetTop - navbarHeight - 20,
+                                behavior: 'smooth'
                             });
                         }
                     }
